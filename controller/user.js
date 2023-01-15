@@ -1,4 +1,5 @@
-const usermodel = require('../model/user')
+const db = require('../config/database')
+
 const register = async (req, res) => {
 
     const { username , password,fullname,sex} = req.body
@@ -8,23 +9,36 @@ const register = async (req, res) => {
             message:"All input is required"
         })
     }
+
     const promise = new Promise((resolve,reject) => {
-       let check = usermodel.create(req.body)
-        setTimeout(() => {
-            resolve(check)
-        }, 3000);
+        let query = db.query('INSERT INTO tbl_user SET ?', 
+          {username:username,password:password,fullname:fullname,sex:sex},
+          ((err,res) => {
+             if(!err){
+                setTimeout(() => {
+                    resolve(true)
+                }, 3000);
+             }else{
+                setTimeout(() => {
+                    reject(false)
+                }, 3000);
+             }
+          })
+        )
     }) 
+
     let result = await promise
-    console.log(result);
-    // if(result){
-    //      return res.json({
-    //         message:"create success"
-    //      }).status(201)
-    // }else{
-    //     return res.json({
-    //         message:"false create"
-    //     }).status(500)
-    // }
+
+    if(result == true){
+        return res.json({
+            message:"create success"
+        }).status(201)
+    }else{
+        return res.json({
+            message:"create false"
+        }).status(500)
+    }
+    
 }
 
 module. exports = {

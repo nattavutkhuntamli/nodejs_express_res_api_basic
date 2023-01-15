@@ -1,19 +1,18 @@
 const db = require('../config/database')
+const bcryptjs  = require('bcryptjs')
+
 
 const create = (req_input) =>{
-    const query = db.query('INSERT INTO tbl_user SET ?', 
+    db.query('INSERT INTO tbl_user SET ?', 
         {username:req_input.username,password:req_input.password,fullname:req_input.fullname,sex:req_input.sex},
-        (error, results) => {
-            if(!error){
-                console.log('success');
+        (err, res) => { 
+            if(!err){
                 return true
             }else{
-                console.log('false');
-                return false
+                return  false
             }
         }
     );
-    
 }
 
 module.exports = {

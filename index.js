@@ -15,7 +15,6 @@ const Server = () => {
             message:"Welcome to nodejs"
         })
     })
-
     app.use('/api/user',Usersrouter)
     
     const PORT = process.env.SERVER_PORT || 5050;
